@@ -1,4 +1,4 @@
-package com.huawei.hicloud.configuration.wechart.constant;
+package com.huawei.hicloud.po.message.constant;
 
 public class EventType {
 
