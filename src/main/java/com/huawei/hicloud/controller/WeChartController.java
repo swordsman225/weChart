@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.huawei.hicloud.configuration.wechart.constant.EventType;
-import com.huawei.hicloud.configuration.wechart.constant.MessageType;
-import com.huawei.hicloud.po.message.Message;
+import com.huawei.hicloud.po.message.EventMessage;
+import com.huawei.hicloud.po.message.constant.MessageType;
+import com.huawei.hicloud.service.IMessageService;
 import com.huawei.hicloud.service.IWeChartService;
 import com.huawei.hicloud.utils.XmlUtils;
 
@@ -29,6 +29,9 @@ public class WeChartController {
 	
 	@Autowired
 	private IWeChartService iWeChartService;
+	
+	@Autowired
+	private IMessageService iMessageService;
 	
 	@RequestMapping(value = "/handler", method = RequestMethod.GET)
 	public String checkSignature(@RequestParam String signature, @RequestParam String timestamp, @RequestParam String nonce,
@@ -54,43 +57,20 @@ public class WeChartController {
 		logger.info("XML message: {}.", jsonObject);
 		
 		String msgType = jsonObject.getString("MsgType");
-		String event = jsonObject.getString("Event");
-		String eventKey = jsonObject.getString("EventKey");
-		String toUserName = jsonObject.getString("ToUserName");
-		String fromUserName = jsonObject.getString("FromUserName");
 		
+		String ackMsg = null;
 		switch (msgType) {
 		case MessageType.EVENT:
-			if (EventType.CLICK.equals(event)) {
-				if ("V1001_TODAY_MUSIC".equals(eventKey)) {
-					Message message = new Message();
-					message.setMsgType(MessageType.TEXT);
-					message.setToUserName(fromUserName);
-					message.setFromUserName(toUserName);
-					message.setCreateTime(System.currentTimeMillis() + "");
-					message.setContent("事件-今日歌曲");
-					
-					return XmlUtils.toXML(message);
-				} else if ("ev-111111111111112".equals(eventKey)) {
-					Message message = new Message();
-					message.setMsgType(MessageType.EVENT);
-					message.setEvent(EventType.CLICK);
-					message.setToUserName(fromUserName);
-					message.setFromUserName(toUserName);
-					message.setContent("事件-2");
-					
-					return XmlUtils.toXML(message);
-				}
-			}
+			EventMessage eventMessage = jsonObject.toJavaObject(EventMessage.class);
+			ackMsg = iMessageService.dealEventMessage(eventMessage);
 			break;
 
 		default:
 			break;
 		}
 		
-		
-		logger.info("WeChart server message handle end!");
-		return null;
+		logger.info("WeChart server message handle result: {}.", ackMsg);
+		return ackMsg;
 	}
 	
 }

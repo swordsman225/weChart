@@ -7,12 +7,6 @@ public class Message {
 	private String CreateTime;
 	private String MsgType;
 
-	/** event */
-	private String Event;
-	private String EventKey;
-
-	private String Content;
-
 	public String getToUserName() {
 		return ToUserName;
 	}
@@ -43,30 +37,6 @@ public class Message {
 
 	public void setMsgType(String msgType) {
 		MsgType = msgType;
-	}
-
-	public String getEvent() {
-		return Event;
-	}
-
-	public void setEvent(String event) {
-		Event = event;
-	}
-
-	public String getEventKey() {
-		return EventKey;
-	}
-
-	public void setEventKey(String eventKey) {
-		EventKey = eventKey;
-	}
-
-	public String getContent() {
-		return Content;
-	}
-
-	public void setContent(String content) {
-		Content = content;
 	}
 
 }

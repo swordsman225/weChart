@@ -16,6 +16,9 @@ import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 public class XmlUtils {
 
 	public static JSONObject xml2Json(InputStream is) {
+		if (is == null) {
+			return null;
+		}
 		SAXReader reader = new SAXReader();
 		Document document = null;
 		try {
@@ -61,5 +64,21 @@ public class XmlUtils {
 		
 		return obj;
 	}
+	
+	public static <T> T fromXML(InputStream is, T obj) {
+		if (is == null) {
+			return null;
+		}
+		XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
+		xStream.alias("xml", obj.getClass());
+		
+		XStream.setupDefaultSecurity(xStream);
+		xStream.allowTypes(new Class[] { obj.getClass() });
+		
+		xStream.fromXML(is, obj);
+		
+		return obj;
+	}
+	
 
 }
