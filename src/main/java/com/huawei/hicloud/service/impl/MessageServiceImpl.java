@@ -35,7 +35,7 @@ public class MessageServiceImpl implements IMessageService {
 			ackMsg = this.dealClickMsg(rcvMsg);
 			break;
 		case EventType.VIEW:
-			
+			logger.info("Event type is view!");
 			break;
 		default:
 			break;
