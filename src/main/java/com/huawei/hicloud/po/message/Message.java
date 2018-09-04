@@ -4,9 +4,13 @@ public class Message {
 
 	private String ToUserName;
 	private String FromUserName;
-	private String CreateTime;
+	private Long CreateTime;
 	private String MsgType;
-
+	
+	public Message() {
+		super();
+	}
+	
 	public String getToUserName() {
 		return ToUserName;
 	}
@@ -23,11 +27,11 @@ public class Message {
 		FromUserName = fromUserName;
 	}
 
-	public String getCreateTime() {
+	public Long getCreateTime() {
 		return CreateTime;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Long createTime) {
 		CreateTime = createTime;
 	}
 

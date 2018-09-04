@@ -3,12 +3,14 @@ package com.huawei.hicloud.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.huawei.hicloud.po.message.EventMessage;
 import com.huawei.hicloud.po.message.TextMessage;
 import com.huawei.hicloud.po.message.constant.EventType;
 import com.huawei.hicloud.po.message.constant.MessageType;
 import com.huawei.hicloud.service.IMessageService;
+import com.huawei.hicloud.utils.MessageUtils;
 import com.huawei.hicloud.utils.XmlUtils;
 
 @Service
@@ -16,18 +18,24 @@ public class MessageServiceImpl implements IMessageService {
 
 	private static final Logger logger = LoggerFactory.getLogger(MessageServiceImpl.class);
 
+	/**
+	 * Deal event message.
+	 */
 	@Override
-	public String dealEventMessage(EventMessage revMsg) {
-
-		if (revMsg == null) {
+	public String dealEventMessage(EventMessage rcvMsg) {
+		if (rcvMsg == null || !MessageType.EVENT.equals(rcvMsg.getMsgType())) {
+			logger.info("rcvMsg is null or message type doesn't match!");
 			return null;
 		}
 
 		String ackMsg = null;
-		String eventType = revMsg.getEvent();
+		String eventType = rcvMsg.getEvent();
 		switch (eventType) {
 		case EventType.CLICK:
-			ackMsg = this.dealClickMsg(revMsg);
+			ackMsg = this.dealClickMsg(rcvMsg);
+			break;
+		case EventType.VIEW:
+			
 			break;
 		default:
 			break;
@@ -36,10 +44,44 @@ public class MessageServiceImpl implements IMessageService {
 		return ackMsg;
 	}
 	
-	public String dealClickMsg(EventMessage revMsg) {
+	/**
+	 * Deal text message.
+	 */
+	@Override
+	public String dealTextMessage(TextMessage rcvMsg) {
+		if (rcvMsg == null) {
+			return null;
+		}
+		String content = rcvMsg.getContent();
+		if (StringUtils.isEmpty(content)) {
+			return null;
+		}
 		
-		String eventType = revMsg.getEvent();
-		String eventKey = revMsg.getEventKey();
+		String ackMsg = null;
+		
+		TextMessage textMsg = new TextMessage();
+		MessageUtils.ackMessage(rcvMsg, textMsg, MessageType.TEXT);
+		if ("225".equals(content)) {
+			textMsg.setContent("This is my birthday!");
+			ackMsg = XmlUtils.toXML(textMsg);
+		} else {
+			textMsg.setContent("文本事件-" + content);
+			ackMsg = XmlUtils.toXML(textMsg);
+		}
+		
+		return ackMsg;
+	}
+
+
+	/**
+	 * 
+	 * @param rcvMsg
+	 * @return
+	 */
+	public String dealClickMsg(EventMessage rcvMsg) {
+		
+		String eventType = rcvMsg.getEvent();
+		String eventKey = rcvMsg.getEventKey();
 		
 		if (!EventType.CLICK.equals(eventType)) {
 			return null;
@@ -49,10 +91,7 @@ public class MessageServiceImpl implements IMessageService {
 		switch(eventKey) {
 		case "V1001_TODAY_MUSIC":
 			TextMessage textMsg = new TextMessage();
-			textMsg.setMsgType(MessageType.TEXT);
-			textMsg.setToUserName(revMsg.getFromUserName());
-			textMsg.setFromUserName(revMsg.getToUserName());
-			textMsg.setCreateTime(System.currentTimeMillis() + "");
+			MessageUtils.ackMessage(rcvMsg, textMsg, MessageType.TEXT);
 			textMsg.setContent("事件-今日歌曲");
 			
 			ackMsg = XmlUtils.toXML(textMsg);

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huawei.hicloud.po.message.EventMessage;
+import com.huawei.hicloud.po.message.TextMessage;
 import com.huawei.hicloud.po.message.constant.MessageType;
 import com.huawei.hicloud.service.IMessageService;
 import com.huawei.hicloud.service.IWeChartService;
@@ -64,7 +65,10 @@ public class WeChartController {
 			EventMessage eventMessage = jsonObject.toJavaObject(EventMessage.class);
 			ackMsg = iMessageService.dealEventMessage(eventMessage);
 			break;
-
+		case MessageType.TEXT:
+			TextMessage textMessage = jsonObject.toJavaObject(TextMessage.class);
+			ackMsg = iMessageService.dealTextMessage(textMessage);
+			break;
 		default:
 			break;
 		}
