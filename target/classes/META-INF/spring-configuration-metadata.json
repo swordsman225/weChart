@@ -1,0 +1,27 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.huawei.hicloud.configuration.wechart.WeChartProperties",
+      "name": "wechart",
+      "type": "com.huawei.hicloud.configuration.wechart.WeChartProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.huawei.hicloud.configuration.wechart.WeChartProperties",
+      "name": "wechart.appid",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.huawei.hicloud.configuration.wechart.WeChartProperties",
+      "name": "wechart.secret",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.huawei.hicloud.configuration.wechart.WeChartProperties",
+      "name": "wechart.token",
+      "type": "java.lang.String"
+    }
+  ]
+}
