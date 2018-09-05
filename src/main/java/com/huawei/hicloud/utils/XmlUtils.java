@@ -1,7 +1,9 @@
 package com.huawei.hicloud.utils;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.dom4j.Document;
@@ -21,49 +23,43 @@ public class XmlUtils {
 		if (is == null) {
 			return null;
 		}
-		SAXReader reader = new SAXReader();
+		
+		try {
+			if (is.available() == 0) {
+				return null;
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return null;
+		}
+		
 		Document document = null;
 		try {
+			SAXReader reader = new SAXReader();
 			document = reader.read(is);
 		} catch (DocumentException e) {
 			e.printStackTrace();
 			return null;
 		}
 
-		JSONObject jsonObject = new JSONObject();
-
 		Element rootElement = document.getRootElement();
-		List<Element> elements = rootElement.elements();
-		if (elements != null && elements.size() > 0) {
-			for (Element element : elements) {
-				if (element.elements().size() == 0) {
-					jsonObject.put(element.getName(), element.getTextTrim());
-				} else {
-					List<Element> elements2 = element.elements();
-					JSONObject subJson = new JSONObject();
-					for (Element element2 : elements2) {
-						subJson.put(element2.getName(), element2.getTextTrim());
-					}
-					jsonObject.put(element.getName(), subJson);
-				}
-			}
-		}
+		JSONObject jsonObject = xmlElement2JsonObject(rootElement);
 
 		return jsonObject;
 	}
 	
 	
-	public static JSONObject xml2JsonT(String xmlStr) {
-		SAXReader reader = new SAXReader();
-		Document document = null;
-		try {
-			document = reader.read(new ByteArrayInputStream(xmlStr.getBytes("UTF-8")));
-		} catch (Exception e) {
-			e.printStackTrace();
+	public static JSONObject xml2Json(String xmlStr) {
+		/*if (xmlStr == null || xmlStr.length() == 0) {
 			return null;
+		}*/
+		
+		JSONObject jsonObject = null;
+		try {
+			jsonObject = xml2Json(new ByteArrayInputStream(xmlStr.getBytes("UTF-8")));
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
 		}
-		Element rootElement = document.getRootElement();
-		JSONObject jsonObject = xmlElement2JsonObject(rootElement);
 		
 		return jsonObject;
 	}
@@ -91,11 +87,11 @@ public class XmlUtils {
 		return resultJson;
 	}
 	
-	
-	
-	
-	
-
+	/**
+	 * Object serialized to xml string.
+	 * @param obj
+	 * @return
+	 */
 	public static String toXML(Object obj) {
 		XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
 		xStream.alias("xml", obj.getClass());
@@ -105,6 +101,12 @@ public class XmlUtils {
 		return xml;
 	}
 
+	/**
+	 * obj must be java bean.
+	 * @param xml
+	 * @param obj
+	 * @return
+	 */
 	public static <T> T fromXML(String xml, T obj) {
 		if (xml == null || xml.length() == 0) {
 			return null;
@@ -120,6 +122,12 @@ public class XmlUtils {
 		return obj;
 	}
 	
+	/**
+	 * obj must be java bean.
+	 * @param is
+	 * @param obj
+	 * @return
+	 */
 	public static <T> T fromXML(InputStream is, T obj) {
 		if (is == null) {
 			return null;

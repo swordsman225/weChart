@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.huawei.hicloud.po.message.EventMessage;
 import com.huawei.hicloud.po.message.TextMessage;
 import com.huawei.hicloud.po.message.constant.EventType;
@@ -37,6 +38,20 @@ public class MessageServiceImpl implements IMessageService {
 		case EventType.VIEW:
 			logger.info("Event type is view!");
 			break;
+		case EventType.SCANCODE_PUSH:
+			logger.info("Event type is scancode_push!");
+			TextMessage textMsg = new TextMessage();
+			MessageUtils.ackMessage(rcvMsg, textMsg);
+			textMsg.setContent("扫码事件");
+			ackMsg = XmlUtils.toXML(textMsg);
+			break;
+		case EventType.SCANCODE_WAITMSG:
+			logger.info("Event type is scancode_waitmsg!");
+			TextMessage textMsg2 = new TextMessage();
+			MessageUtils.ackMessage(rcvMsg, textMsg2);
+			textMsg2.setContent("Scan QR code result: " + JSON.toJSONString(rcvMsg.getScanCodeInfo()) + ".");
+			ackMsg = XmlUtils.toXML(textMsg2);
+			break;
 		default:
 			break;
 		}
@@ -60,7 +75,7 @@ public class MessageServiceImpl implements IMessageService {
 		String ackMsg = null;
 		
 		TextMessage textMsg = new TextMessage();
-		MessageUtils.ackMessage(rcvMsg, textMsg, MessageType.TEXT);
+		MessageUtils.ackMessage(rcvMsg, textMsg);
 		if ("225".equals(content)) {
 			textMsg.setContent("This is my birthday!");
 			ackMsg = XmlUtils.toXML(textMsg);
@@ -91,7 +106,7 @@ public class MessageServiceImpl implements IMessageService {
 		switch(eventKey) {
 		case "V1001_TODAY_MUSIC":
 			TextMessage textMsg = new TextMessage();
-			MessageUtils.ackMessage(rcvMsg, textMsg, MessageType.TEXT);
+			MessageUtils.ackMessage(rcvMsg, textMsg);
 			textMsg.setContent("事件-今日歌曲");
 			
 			ackMsg = XmlUtils.toXML(textMsg);

@@ -34,8 +34,8 @@ public class XmlTest {
 				"	</ScanCodeInfo>\r\n" + 
 				"</xml>";
 		
-		JSONObject xml2JsonT = XmlUtils.xml2JsonT(xmlStr);
-		logger.info(xml2JsonT.toString());
+		JSONObject xml2JsonT = XmlUtils.xml2Json(xmlStr);
+		logger.info(xml2JsonT + "");
 	}
 	
 	

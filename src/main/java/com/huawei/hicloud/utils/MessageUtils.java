@@ -9,12 +9,11 @@ public class MessageUtils {
 	 * @param rcvMsg
 	 * @param ackMsg
 	 */
-	public static void ackMessage(Message rcvMsg, Message ackMsg, String msgType) {
+	public static void ackMessage(Message rcvMsg, Message ackMsg) {
 		if (rcvMsg == null || ackMsg == null) {
 			return ;
 		}
 		
-		ackMsg.setMsgType(msgType);
 		ackMsg.setFromUserName(rcvMsg.getToUserName());
 		ackMsg.setToUserName(rcvMsg.getFromUserName());
 		ackMsg.setCreateTime(System.currentTimeMillis());
