@@ -1,6 +1,7 @@
 package com.huawei.hicloud.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huawei.hicloud.po.message.EventMessage;
+import com.huawei.hicloud.po.message.Message;
 import com.huawei.hicloud.po.message.TextMessage;
 import com.huawei.hicloud.po.message.constant.MessageType;
 import com.huawei.hicloud.service.IMessageService;
@@ -55,6 +57,7 @@ public class WeChartController {
 		logger.info("WeChart server message handler request params: {}.", JSON.toJSONString(params));
 		
 		JSONObject jsonObject = XmlUtils.xml2Json(request.getInputStream());
+		
 		logger.info("XML message: {}.", jsonObject);
 		
 		String msgType = jsonObject.getString("MsgType");

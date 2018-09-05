@@ -1,5 +1,6 @@
 package com.huawei.hicloud.utils;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
+import com.thoughtworks.xstream.mapper.MapperWrapper;
 
 public class XmlUtils {
 
@@ -34,12 +36,65 @@ public class XmlUtils {
 		List<Element> elements = rootElement.elements();
 		if (elements != null && elements.size() > 0) {
 			for (Element element : elements) {
-				jsonObject.put(element.getName(), element.getTextTrim());
+				if (element.elements().size() == 0) {
+					jsonObject.put(element.getName(), element.getTextTrim());
+				} else {
+					List<Element> elements2 = element.elements();
+					JSONObject subJson = new JSONObject();
+					for (Element element2 : elements2) {
+						subJson.put(element2.getName(), element2.getTextTrim());
+					}
+					jsonObject.put(element.getName(), subJson);
+				}
 			}
 		}
 
 		return jsonObject;
 	}
+	
+	
+	public static JSONObject xml2JsonT(String xmlStr) {
+		SAXReader reader = new SAXReader();
+		Document document = null;
+		try {
+			document = reader.read(new ByteArrayInputStream(xmlStr.getBytes("UTF-8")));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		Element rootElement = document.getRootElement();
+		JSONObject jsonObject = xmlElement2JsonObject(rootElement);
+		
+		return jsonObject;
+	}
+	
+	
+	public static JSONObject xmlElement2JsonObject(Element element) {
+		
+		if (element == null) {
+			return null;
+		}
+		
+		JSONObject resultJson = new JSONObject();
+		
+		List<Element> childElements = element.elements();
+		for (Element childElement : childElements) {
+			List<Element> subElements = childElement.elements();
+			if (subElements != null && subElements.size() == 0) {
+				resultJson.put(childElement.getName(), childElement.getTextTrim());
+			} else {
+				JSONObject childJson = xmlElement2JsonObject(childElement);
+				resultJson.put(childElement.getName(), childJson);
+			}
+		}
+		
+		return resultJson;
+	}
+	
+	
+	
+	
+	
 
 	public static String toXML(Object obj) {
 		XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
@@ -69,7 +124,26 @@ public class XmlUtils {
 		if (is == null) {
 			return null;
 		}
-		XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
+		XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_"))) {
+			@Override
+			protected MapperWrapper wrapMapper(MapperWrapper next){
+				return new MapperWrapper(next) {
+					@Override
+					public boolean shouldSerializeMember(@SuppressWarnings("rawtypes") Class definedIn, String fieldName){
+						if (definedIn == Object.class){
+							try {
+								return this.realClass(fieldName) != null;
+							} catch (Exception e){
+								return false;
+							}
+						} else {
+							return super.shouldSerializeMember(definedIn, fieldName);
+						}
+					}
+				};
+			}
+
+		};
 		xStream.alias("xml", obj.getClass());
 		
 		XStream.setupDefaultSecurity(xStream);

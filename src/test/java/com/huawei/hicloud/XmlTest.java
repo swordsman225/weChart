@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.huawei.hicloud.po.AccessToken;
 import com.huawei.hicloud.utils.XmlUtils;
 import com.thoughtworks.xstream.XStream;
@@ -20,6 +21,24 @@ public class XmlTest {
 	
 	private static final Logger logger = LoggerFactory.getLogger(XmlTest.class);
 
+	
+	@Test
+	public void testXml2Json() {
+		String xmlStr = "<xml>\r\n" + 
+				"	<ToUserName>gh_265859e50ebe</ToUserName>\r\n" + 
+				"	<FromUserName>osAH45pN5t9wtbvOPoV7Bxb4OXSo</FromUserName>\r\n" + 
+				"	<MsgType>event</MsgType>\r\n" + 
+				"	<ScanCodeInfo>\r\n" + 
+				"		<ScanType>qrcode</ScanType>\r\n" + 
+				"		<ScanResult><![CDATA[http://weixin.qq.com/r/Zh3dxSLEwn_9rWam90h0]]></ScanResult>\r\n" + 
+				"	</ScanCodeInfo>\r\n" + 
+				"</xml>";
+		
+		JSONObject xml2JsonT = XmlUtils.xml2JsonT(xmlStr);
+		logger.info(xml2JsonT.toString());
+	}
+	
+	
 	@Test
 	public void textMessageToXml() {
 
@@ -76,6 +95,7 @@ public class XmlTest {
 		logger.info("AsXML: {}.", asXML);
 		
 	}
+	
 	
 	public String toXML(Object obj) {
 		if (obj == null) {
