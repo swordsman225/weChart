@@ -1,8 +1,12 @@
 
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    #password: root
 
 wechart:
   appid: wx15d1cc3f0afe1ccf
   secret: 981ced099d600e2e21030940c621e809
   token: hicloud
-  
 

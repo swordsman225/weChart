@@ -14,6 +14,8 @@ public class WeChartProperties {
 	private String appid;
 
 	private String secret;
+	
+	private String EncodingAESKey;
 
 	public String getToken() {
 		return token;
@@ -39,4 +41,12 @@ public class WeChartProperties {
 		this.secret = secret;
 	}
 
+	public String getEncodingAESKey() {
+		return EncodingAESKey;
+	}
+
+	public void setEncodingAESKey(String encodingAESKey) {
+		EncodingAESKey = encodingAESKey;
+	}
+	
 }

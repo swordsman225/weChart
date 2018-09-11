@@ -3,6 +3,7 @@ package com.huawei.hicloud.po.message;
 import com.huawei.hicloud.po.message.constant.MessageType;
 
 public class TextMessage extends Message {
+	
 	private String Content;
 	
 	public TextMessage() {
