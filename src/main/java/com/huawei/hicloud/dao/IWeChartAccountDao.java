@@ -14,6 +14,8 @@ public interface IWeChartAccountDao {
 
 	public WeChartAccount findByPK(String id);
 	
+	public WeChartAccount findByAppId(String appId);
+	
 	public List<WeChartAccount> query(WeChartAccount account);
 	
 	public Integer update(WeChartAccount account);

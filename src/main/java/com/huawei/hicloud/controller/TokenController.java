@@ -23,9 +23,9 @@ private static final Logger logger = LoggerFactory.getLogger(WeChartController.c
 
 	
 	@RequestMapping(value="/token", method=RequestMethod.GET)
-	public ResultMap<AccessToken> getAccessToken(@RequestParam String appId) {
+	public ResultMap<AccessToken> getAccessToken(@RequestParam String appid) {
 		
-		ResultMap<AccessToken> resultMap = iTokenService.getAccessTokenFromCache(appId);
+		ResultMap<AccessToken> resultMap = iTokenService.getAccessTokenFromCache(appid);
 		logger.info("Get access token result: {}.", resultMap);
 		
 		return resultMap;

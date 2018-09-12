@@ -62,6 +62,15 @@
 		where id = #{id, jdbcType=VARCHAR}
 	</select>
 	
+	<!-- Select by primary key. -->
+	<select id="findByAppId" resultMap="base_result_map">
+		select 
+			<include refid="base_columns" />
+		from
+			wx_account
+		where appid = #{appid, jdbcType=VARCHAR}
+	</select>
+	
 	<!-- Query record list. -->
 	<select id="query" resultMap="base_result_map">
 		select 

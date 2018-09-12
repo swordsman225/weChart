@@ -13,9 +13,10 @@ import org.springframework.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.huawei.hicloud.component.redis.RedisKeyConstants;
-import com.huawei.hicloud.component.wechart.configuration.WeChartProperties;
 import com.huawei.hicloud.component.wechart.constant.WeChartApiURL;
+import com.huawei.hicloud.dao.IWeChartAccountDao;
 import com.huawei.hicloud.po.AccessToken;
+import com.huawei.hicloud.po.WeChartAccount;
 import com.huawei.hicloud.service.ITokenService;
 import com.huawei.hicloud.utils.HttpClientUtils;
 import com.huawei.hicloud.vo.ResultMap;
@@ -26,13 +27,14 @@ public class TokenServiceImpl implements ITokenService {
 
 	private static final Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);
 	
-	
-	@Autowired
-	private WeChartProperties weChartProperties;
+	/*@Autowired
+	private WeChartProperties weChartProperties;*/
 	
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 	
+	@Autowired
+	private IWeChartAccountDao iWeChartAccountDao;
 
 	/**
 	 * 从缓存中获取token.
@@ -60,10 +62,12 @@ public class TokenServiceImpl implements ITokenService {
 	 */
 	@Override
 	public ResultMap<AccessToken> getAccessTokenFromWeChart(String appId) {
+		
+		WeChartAccount weChartAccount = iWeChartAccountDao.findByAppId(appId);
 		HashMap<String, String> params = new HashMap<>();
 		params.put("grant_type", "client_credential");
-		params.put("appid", weChartProperties.getAppid());
-		params.put("secret", weChartProperties.getSecret());
+		params.put("appid", appId);
+		params.put("secret", weChartAccount.getSecret());
 		
 		JSONObject json = HttpClientUtils.get(WeChartApiURL.ACCESS_TOKEN, params);
 		if (StringUtils.isEmpty(json.get("errcode"))) {

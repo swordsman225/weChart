@@ -13,7 +13,9 @@ import org.springframework.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.huawei.hicloud.component.wechart.configuration.WeChartProperties;
 import com.huawei.hicloud.component.wechart.constant.WeChartApiURL;
+import com.huawei.hicloud.dao.IWeChartAccountDao;
 import com.huawei.hicloud.po.AccessToken;
+import com.huawei.hicloud.po.WeChartAccount;
 import com.huawei.hicloud.service.IWeChartService;
 import com.huawei.hicloud.utils.EncryptUtils;
 import com.huawei.hicloud.utils.HttpClientUtils;
@@ -27,11 +29,16 @@ public class WeChartServiceImpl implements IWeChartService {
 	
 	@Autowired
 	private WeChartProperties weChartProperties;
+	
+	@Autowired
+	private IWeChartAccountDao iWeChartAccountDao;
 
 	@Override
-	public boolean checkSignature(String signature, String timestamp, String nonce) {
+	public boolean checkSignature(String appId, String signature, String timestamp, String nonce) {
 		
-		String[] arr = new String[] { timestamp, nonce, weChartProperties.getToken() };
+		WeChartAccount weChartAccount = iWeChartAccountDao.findByAppId(appId);
+		
+		String[] arr = new String[] { timestamp, nonce, weChartAccount.getToken() };
 
 		Arrays.sort(arr);
 		StringBuffer stringBuffer = new StringBuffer();
