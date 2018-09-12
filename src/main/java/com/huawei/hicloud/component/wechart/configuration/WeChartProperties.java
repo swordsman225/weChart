@@ -1,4 +1,4 @@
-package com.huawei.hicloud.configuration.wechart;
+package com.huawei.hicloud.component.wechart.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

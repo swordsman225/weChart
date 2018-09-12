@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.huawei.hicloud.configuration.wechart.constant.WeChartApiURL;
+import com.huawei.hicloud.component.wechart.constant.WeChartApiURL;
 import com.huawei.hicloud.po.AccessToken;
 import com.huawei.hicloud.po.menu.Button;
 import com.huawei.hicloud.service.IMenuService;
@@ -22,10 +22,10 @@ public class MenuServiceImpl implements IMenuService {
 	private ITokenService iTokenService;
 	
 	@Override
-	public ResultMap<Object> create(Map<String, List<Button>> menuParams) {
+	public ResultMap<Object> create(String appId, Map<String, List<Button>> menuParams) {
 		
 		AccessToken accessToken = null;
-		ResultMap<AccessToken> resultMap = iTokenService.getAccessTokenFromCache();
+		ResultMap<AccessToken> resultMap = iTokenService.getAccessTokenFromCache(appId);
 		if (resultMap.isSuccess()) {
 			accessToken = resultMap.getData();
 		}
@@ -39,10 +39,10 @@ public class MenuServiceImpl implements IMenuService {
 	}
 	
 	@Override
-	public ResultMap<Object> get() {
+	public ResultMap<Object> get(String appId) {
 		
 		AccessToken accessToken = null;
-		ResultMap<AccessToken> resultMap = iTokenService.getAccessTokenFromCache();
+		ResultMap<AccessToken> resultMap = iTokenService.getAccessTokenFromCache(appId);
 		if (!resultMap.isSuccess()) {
 			return ResultMap.build((String)resultMap.getCode(), (String)resultMap.getMsg());
 		}
@@ -57,10 +57,10 @@ public class MenuServiceImpl implements IMenuService {
 	}
 	
 	@Override
-	public ResultMap<Object> delete() {
+	public ResultMap<Object> delete(String appId) {
 		
 		AccessToken accessToken = null;
-		ResultMap<AccessToken> resultMap = iTokenService.getAccessTokenFromCache();
+		ResultMap<AccessToken> resultMap = iTokenService.getAccessTokenFromCache(appId);
 		if (!resultMap.isSuccess()) {
 			return ResultMap.build((String)resultMap.getCode(), (String)resultMap.getMsg());
 		}

@@ -1,9 +1,31 @@
 
 spring:
+  datasource:
+    name: wechart
+    url: jdbc:mysql://127.0.0.1:3306/wechart?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
   redis:
     host: 127.0.0.1
     port: 6379
     #password: root
+    
+mybatis:
+  # 别名
+  type-aliases-package: com.huawei.hicloud.po
+  # mapper扫描路径
+  mapper-locations:
+  - classpath:/mappers/*.xml
+  # 配置文件路径
+  #config-location: classpath:mybatis/mybatis-config.xml
+
+# pagehelper paging plugin
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
 
 wechart:
   appid: wx15d1cc3f0afe1ccf

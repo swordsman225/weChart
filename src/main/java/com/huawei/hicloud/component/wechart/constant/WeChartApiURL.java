@@ -1,4 +1,4 @@
-package com.huawei.hicloud.configuration.wechart.constant;
+package com.huawei.hicloud.component.wechart.constant;
 
 public class WeChartApiURL {
 

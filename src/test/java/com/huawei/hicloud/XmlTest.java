@@ -55,7 +55,7 @@ public class XmlTest {
 	public void testXStream() {
 		AccessToken accessToken = new AccessToken();
 		accessToken.setAccess_token(UUID.randomUUID().toString());
-		accessToken.setExpires_in("7200");
+		accessToken.setExpires_in(7200L);
 		
 		String xml = XmlUtils.toXML(accessToken);
 		logger.info("xml: {}.", xml);
@@ -79,7 +79,7 @@ public class XmlTest {
 	public void testDom4j() {
 		AccessToken accessToken = new AccessToken();
 		accessToken.setAccess_token(UUID.randomUUID().toString());
-		accessToken.setExpires_in("7200");
+		accessToken.setExpires_in(7200L);
 		
 		Field[] fields = accessToken.getClass().getDeclaredFields();
 		for (Field field : fields) {

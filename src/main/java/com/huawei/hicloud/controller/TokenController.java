@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.huawei.hicloud.po.AccessToken;
@@ -22,9 +23,9 @@ private static final Logger logger = LoggerFactory.getLogger(WeChartController.c
 
 	
 	@RequestMapping(value="/token", method=RequestMethod.GET)
-	public ResultMap<AccessToken> getAccessToken() {
+	public ResultMap<AccessToken> getAccessToken(@RequestParam String appId) {
 		
-		ResultMap<AccessToken> resultMap = iTokenService.getAccessTokenFromCache();
+		ResultMap<AccessToken> resultMap = iTokenService.getAccessTokenFromCache(appId);
 		logger.info("Get access token result: {}.", resultMap);
 		
 		return resultMap;

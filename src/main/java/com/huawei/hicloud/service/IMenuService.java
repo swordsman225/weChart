@@ -8,10 +8,10 @@ import com.huawei.hicloud.vo.ResultMap;
 
 public interface IMenuService {
 
-	public ResultMap<Object> create(Map<String, List<Button>> params);
+	public ResultMap<Object> create(String appId, Map<String, List<Button>> params);
 	
-	public ResultMap<Object> get();
+	public ResultMap<Object> get(String appId);
 	
-	public ResultMap<Object> delete();
+	public ResultMap<Object> delete(String appId);
 	
 }

@@ -27,7 +27,7 @@ public class RedisLettuceController {
 		
 		redisTemplate.opsForValue().set(key, value, 600L, TimeUnit.SECONDS);
 		
-		redisTemplate.opsForHash().put("kabc", "abc", value);
+		redisTemplate.opsForHash().put("kab", "abc" + (int)(Math.random() * 100), value);
 		
 		
 		HashMap<String, Object> resultMap = new HashMap<>();

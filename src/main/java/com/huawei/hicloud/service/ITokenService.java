@@ -5,8 +5,8 @@ import com.huawei.hicloud.vo.ResultMap;
 
 public interface ITokenService {
 
-	public ResultMap<AccessToken> getAccessTokenFromCache();
+	public ResultMap<AccessToken> getAccessTokenFromCache(String appId);
 	
-	public ResultMap<AccessToken> getAccessTokenFromWeChart();
+	public ResultMap<AccessToken> getAccessTokenFromWeChart(String appId);
 	
 }

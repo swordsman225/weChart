@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.huawei.hicloud.configuration.wechart.WeChartProperties;
-import com.huawei.hicloud.configuration.wechart.constant.WeChartApiURL;
+import com.huawei.hicloud.component.wechart.configuration.WeChartProperties;
+import com.huawei.hicloud.component.wechart.constant.WeChartApiURL;
 import com.huawei.hicloud.po.AccessToken;
 import com.huawei.hicloud.service.IWeChartService;
 import com.huawei.hicloud.utils.EncryptUtils;

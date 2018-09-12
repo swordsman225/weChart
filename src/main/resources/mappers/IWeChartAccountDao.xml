@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huawei.hicloud.dao.IWeChartAccountDao">
+	
+	<!-- Base columns. -->
+	<sql id="base_columns">
+		id, 
+		name, 
+		appid, 
+		token, 
+		secret, 
+		create_time, 
+		create_by_name, 
+		create_by_username, 
+		update_time, 
+		update_by_name, 
+		update_by_username
+	</sql>
+	
+	<!-- Base result map. -->
+	<resultMap id="base_result_map" type="com.huawei.hicloud.po.WeChartAccount">
+		<result column="appid" jdbcType="VARCHAR" property="appid" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+		
+		<result column="create_by_username" jdbcType="VARCHAR" property="createByUsername" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="update_by_name" jdbcType="VARCHAR" property="updateByName" />
+		
+		<result column="update_by_username" jdbcType="VARCHAR" property="updateByUsername" />
+	</resultMap>
+	
+	<!-- Insert a record. -->
+	<insert id="create">
+		insert into wx_account (
+			id, 
+			name, 
+			appid, 
+			token, 
+			secret, 
+			create_time, 
+			create_by_name, 
+			create_by_username
+		) values (
+			#{id, jdbcType=VARCHAR},
+			#{name, jdbcType=VARCHAR},
+			#{appid, jdbcType=VARCHAR},
+			#{token, jdbcType=VARCHAR},
+			#{secret, jdbcType=VARCHAR},
+			#{createTime, jdbcType=TIMESTAMP},
+			#{createByName, jdbcType=VARCHAR},
+			#{createByUsername, jdbcType=VARCHAR},
+		)
+	</insert>
+	
+	<!-- Select by primary key. -->
+	<select id="findByPK" resultMap="base_result_map">
+		select 
+			<include refid="base_columns" />
+		from
+			wx_account
+		where id = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- Query record list. -->
+	<select id="query" resultMap="base_result_map">
+		select 
+			<include refid="base_columns" />
+		from
+			wx_account
+		<where>
+			<if test="id != null and id !=''">
+				id = #{id, jdbcType=VARCHAR}
+			</if>
+			<if test="name != null and name !=''">
+				and name = #{name, jdbcType=VARCHAR}
+			</if>
+			<if test="appid != null and appid !=''">
+				and appid = #{appid, jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
+	<!-- Update record. -->
+	<update id="update">
+		update wx_account
+		<set>
+			<if test="name != null and name !=''">
+				name = #{name, jdbcType=VARCHAR},
+			</if>
+			<if test="appid != null and appid !=''">
+				appid = #{appid, jdbcType=VARCHAR},
+			</if>
+			<if test="token != null and token !=''">
+				token = #{token, jdbcType=VARCHAR},
+			</if>
+			<if test="secret != null and secret !=''">
+				secret = #{secret, jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime, jdbcType=VARCHAR},
+			</if>
+			<if test="updateByName != null and updateByName !=''">
+				update_by_name = #{updateByName, jdbcType=VARCHAR},
+			</if>
+			<if test="updateByUsername != null and updateByUsername !=''">
+				update_by_username = #{updateByUsername, jdbcType=VARCHAR},
+			</if>
+		</set>
+	</update>
+
+	<delete id="delete">
+		delete from wx_account
+		where id = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

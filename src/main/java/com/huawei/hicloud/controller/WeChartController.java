@@ -35,10 +35,10 @@ public class WeChartController {
 	private IMessageService iMessageService;
 	
 	@RequestMapping(value = "/handler", method = RequestMethod.GET)
-	public String checkSignature(@RequestParam String signature, @RequestParam String timestamp, @RequestParam String nonce,
-			@RequestParam String echostr) {
-		logger.info("WeChart server token authentication request params, signature: {}, timestamp: {}, nonce: {}, echostr: {}.",
-				signature, timestamp, nonce, echostr);
+	public String checkSignature(@RequestParam String appId, @RequestParam String signature, @RequestParam String timestamp, 
+			@RequestParam String nonce, @RequestParam String echostr) {
+		logger.info("WeChart server token authentication request params, appId:{}, signature: {}, timestamp: {}, nonce: {}, echostr: {}.",
+				appId, signature, timestamp, nonce, echostr);
 		
 		boolean tokenAuthResult = iWeChartService.checkSignature(signature, timestamp, nonce);
 		if (tokenAuthResult) {
