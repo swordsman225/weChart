@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class RedisLettuceController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(RedisLettuceController.class);
-	
+
+
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 	
