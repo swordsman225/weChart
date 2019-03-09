@@ -31,26 +31,30 @@ public class MessageServiceImpl implements IMessageService {
 
 		String ackMsg = null;
 		String eventType = rcvMsg.getEvent();
+		logger.info("Event type is {}.", eventType);
 		switch (eventType) {
 		case EventType.CLICK:
 			ackMsg = this.dealClickMsg(rcvMsg);
 			break;
 		case EventType.VIEW:
-			logger.info("Event type is view!");
 			break;
 		case EventType.SCANCODE_PUSH:
-			logger.info("Event type is scancode_push!");
 			TextMessage textMsg = new TextMessage();
 			MessageUtils.ackMessage(rcvMsg, textMsg);
 			textMsg.setContent("扫码事件");
 			ackMsg = XmlUtils.toXML(textMsg);
 			break;
 		case EventType.SCANCODE_WAITMSG:
-			logger.info("Event type is scancode_waitmsg!");
 			TextMessage textMsg2 = new TextMessage();
 			MessageUtils.ackMessage(rcvMsg, textMsg2);
 			textMsg2.setContent("Scan QR code result: " + JSON.toJSONString(rcvMsg.getScanCodeInfo()) + ".");
 			ackMsg = XmlUtils.toXML(textMsg2);
+			break;
+		case EventType.SUBSCRIBE:
+			TextMessage textMsg3 = new TextMessage();
+			MessageUtils.ackMessage(rcvMsg, textMsg3);
+			textMsg3.setContent("<a href=\"http://www.baidu.com\">百度</a>");
+			ackMsg = XmlUtils.toXML(textMsg3);
 			break;
 		default:
 			break;
